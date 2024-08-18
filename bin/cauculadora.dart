@@ -24,10 +24,10 @@ void main(List<String> args) {
     if (alphabeticalChars.hasMatch(args[1])) {
         throw CliException('Caracteres alfabéticos não permitidos.');
     }
-
-    args[1]  = doDivisionOperations(args[1]);
-    print(args[1]);
-
+    if (args[1].contains('/')) {
+      args[1]  = doDivisionOperations(args[1]);
+    }
+    print('O resultado é: ${args[1]}');
   } catch (e) {
     print(e.toString());
   }
@@ -45,9 +45,8 @@ String doDivisionOperations(String expression) {
 
   for (int charIndex = 0; charIndex < expression.runes.length; charIndex++) {
     if (operationChars.contains(expression[charIndex])) {
-      if (expression[charIndex] == '/') {
+      if (expression[charIndex] == '/' && leftOperand == null) {
         operatorIndex = charIndex;
-
         if (leftStringOperand != '' && leftOperand == null) {
           leftOperand  = double.parse(leftStringOperand);
           leftDivisionIndex =  (operatorIndex - leftStringOperand.length);
@@ -74,12 +73,14 @@ String doDivisionOperations(String expression) {
   }
   if (leftOperand != null && rightOperand != null) {
     int leftIndexControl  = (leftStringOperand.length - 2 );
-    print(leftIndexControl);
-
     expression = expression.replaceRange(leftDivisionIndex, (leftIndexControl <= -1
         ? rightDivisionIndex + (leftIndexControl + 2)
         :rightDivisionIndex - leftIndexControl),
         (leftOperand/rightOperand).toString());
   }
+  if (expression.contains('/')) {
+    expression = doDivisionOperations(expression);
+  }
+
   return expression;
 }
