@@ -38,10 +38,10 @@ void main(List<String> args) {
       operationsCount++;
     }
     if (operationsCount > 1)  {
-      if (args[1].contains('*') && args[1].contains('/')) {
+      if (args[1].contains('*') || args[1].contains('/')) {
         args[1] = doInOrderLevel2(args[1]);
       }
-      if (args[1].contains('+') && args[1].contains('-')) {
+      if (args[1].contains('+') || args[1].contains('-')) {
         args[1] = doInOrderLevel1(args[1]);
       }
     } else {
